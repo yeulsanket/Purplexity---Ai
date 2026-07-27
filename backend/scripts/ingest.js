@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { TextLoader } from "langchain/document_loaders/fs/text";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import pineconeService from '../src/services/pinecone.service.js';
 
 const __filename = fileURLToPath(import.meta.url);

@@ -7,11 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#07090f',
-        surface: 'rgba(255, 255, 255, 0.05)',
-        surfaceHover: 'rgba(255, 255, 255, 0.1)',
-        primary: '#06b6d4', // cyan-500
-        border: 'rgba(255, 255, 255, 0.1)',
+        background: '#202222',
+        surface: '#2B2D2D',
+        surfaceHover: '#383A3A',
+        primary: '#24A0ED', // A brand blue color
+        border: '#383A3A',
+        sidebarBg: '#191A1A',
+        sidebarHover: '#2A2B2B',
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
       }
     },
   },

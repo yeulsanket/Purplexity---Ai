@@ -37,7 +37,7 @@ const Sidebar = () => {
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             exit={{ x: -300 }}
-            className="fixed md:static inset-y-0 left-0 z-40 w-64 glass-panel border-r border-border border-y-0 border-l-0 flex flex-col h-full rounded-none"
+            className="fixed md:static inset-y-0 left-0 z-40 w-64 bg-sidebarBg flex flex-col h-full rounded-none"
           >
             {/* Header */}
             <div className="p-4 flex items-center justify-between border-b border-border/50">
@@ -51,7 +51,7 @@ const Sidebar = () => {
             <div className="p-4">
               <button 
                 onClick={handleNewChat}
-                className="w-full flex items-center justify-center space-x-2 bg-surfaceHover hover:bg-white/10 text-white py-2.5 rounded-lg transition-colors border border-border"
+                className="w-full flex items-center justify-center space-x-2 bg-surface hover:bg-surfaceHover text-gray-200 py-2.5 rounded-full transition-all border border-border hover:border-gray-500 font-medium"
               >
                 <Plus className="w-4 h-4" />
                 <span>New Thread</span>
@@ -66,8 +66,8 @@ const Sidebar = () => {
               {chats.map((chat) => (
                 <div 
                   key={chat._id}
-                  className={`group flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
-                    activeChatId === chat._id ? 'bg-primary/20 text-primary' : 'text-gray-300 hover:bg-surfaceHover'
+                  className={`group flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                    activeChatId === chat._id ? 'bg-sidebarHover text-white' : 'text-gray-400 hover:bg-sidebarHover hover:text-gray-200'
                   }`}
                   onClick={() => dispatch(setActiveChat(chat._id))}
                 >
@@ -92,7 +92,7 @@ const Sidebar = () => {
             <div className="p-4 border-t border-border/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 overflow-hidden">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-bold uppercase flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-surface border border-border flex items-center justify-center text-primary font-bold uppercase flex-shrink-0">
                     {user?.username?.[0] || 'U'}
                   </div>
                   <div className="truncate text-sm font-medium text-gray-200">

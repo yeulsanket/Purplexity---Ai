@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import pineconeService from '../services/pinecone.service.js';
 
 export const uploadDocument = async (req, res, next) => {

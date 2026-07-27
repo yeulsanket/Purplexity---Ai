@@ -60,17 +60,17 @@ const InputBar = ({ onSendMessage, loading }) => {
 
   return (
     <div className="max-w-4xl mx-auto w-full p-4 relative">
-      <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-3 flex flex-col focus-within:ring-1 focus-within:ring-primary/50 transition-all">
+      <form onSubmit={handleSubmit} className="relative glass-panel rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary/50">
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything..."
-          className="w-full bg-transparent text-white resize-none outline-none max-h-48 min-h-[56px] px-2 py-2"
-          rows={1}
+          disabled={loading}
+          className="w-full bg-transparent text-gray-200 placeholder-gray-500 p-4 min-h-[100px] resize-none focus:outline-none disabled:opacity-50 text-[15px] leading-relaxed"
         />
         
-        <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
+        <div className="flex items-center justify-between p-2 pt-0">
           <div className="flex items-center space-x-2">
             {/* Model Selector */}
             <select
@@ -87,10 +87,10 @@ const InputBar = ({ onSendMessage, loading }) => {
             <button
               type="button"
               onClick={() => setWebSearch(!webSearch)}
-              className={`flex items-center space-x-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors ${
+              className={`flex items-center space-x-1.5 text-xs px-3 py-1.5 rounded-full border transition-all ${
                 webSearch 
-                  ? 'bg-primary/20 text-primary border-primary/50' 
-                  : 'bg-transparent text-gray-400 border-border hover:bg-surfaceHover'
+                  ? 'bg-primary/10 border-primary/30 text-primary' 
+                  : 'bg-transparent border-border text-gray-400 hover:bg-surfaceHover hover:text-gray-200'
               }`}
             >
               <Globe className="w-3.5 h-3.5" />
@@ -109,7 +109,7 @@ const InputBar = ({ onSendMessage, loading }) => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="flex items-center space-x-1.5 text-xs px-3 py-1.5 rounded-full border border-border bg-transparent text-gray-400 hover:bg-surfaceHover transition-colors disabled:opacity-50"
+              className="flex items-center space-x-1.5 text-xs px-3 py-1.5 rounded-full border border-border bg-transparent text-gray-400 hover:bg-surfaceHover hover:text-gray-200 transition-all disabled:opacity-50"
               title="Upload PDF or Text file to Knowledge Base"
             >
               {uploading ? (
@@ -136,10 +136,10 @@ const InputBar = ({ onSendMessage, loading }) => {
             ) : (
               <button
                 type="submit"
-                disabled={!message.trim()}
-                className="bg-primary text-background p-2 rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!message.trim() || loading}
+                className="p-2 bg-primary hover:bg-primary/90 text-white rounded-full transition-transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 shadow-md"
               >
-                <Send className="w-5 h-5 ml-0.5" />
+                <Send className="w-4 h-4 ml-0.5" />
               </button>
             )}
           </div>
