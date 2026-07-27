@@ -24,7 +24,7 @@ const ChatArea = ({ onSendMessage }) => {
           ) : (
             <>
               {messages.map((msg, idx) => (
-                <MessageBubble key={msg._id || idx} message={msg} />
+                <MessageBubble key={msg._id || idx} message={msg} isLatest={idx === messages.length - 1} />
               ))}
               {messageLoading && (
                 <div className="flex w-full justify-start mb-6">

@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import { User, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const MessageBubble = ({ message }) => {
+const TypewriterMarkdown = ({ content, isLatest }) => {
+  const [displayedContent, setDisplayedContent] = useState(isLatest ? '' : content);
+
+  useEffect(() => {
+    if (!isLatest) {
+      setDisplayedContent(content);
+      return;
+    }
+
+    let currentIndex = 0;
+    // Speed: 5 chars per tick (approx 50ms) to type reasonably fast
+    const charsPerTick = 3; 
+    const interval = setInterval(() => {
+      currentIndex += charsPerTick;
+      if (currentIndex >= content.length) {
+        currentIndex = content.length;
+        clearInterval(interval);
+      }
+      setDisplayedContent(content.substring(0, currentIndex));
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, [content, isLatest]);
+
+  return <MarkdownRenderer content={displayedContent} />;
+};
+
+const MessageBubble = ({ message, isLatest }) => {
   const isUser = message.role === 'user';
 
   return (
@@ -29,7 +56,7 @@ const MessageBubble = ({ message }) => {
             {isUser ? (
               <p className="whitespace-pre-wrap">{message.content}</p>
             ) : (
-              <MarkdownRenderer content={message.content} />
+              <TypewriterMarkdown content={message.content} isLatest={isLatest} />
             )}
           </div>
 
