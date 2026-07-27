@@ -26,7 +26,7 @@ class PineconeService {
 
       // Initialize embeddings
       this.embeddings = new GoogleGenerativeAIEmbeddings({
-        model: "text-embedding-004", // Latest Google Embedding Model
+        model: "gemini-embedding-2", // Latest Google Embedding Model
         apiKey: ENV.GOOGLE_API_KEY,
       });
 
