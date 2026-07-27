@@ -1,4 +1,9 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -52,6 +57,16 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/chats', messageRoutes); // Mount message routes FIRST to match /api/chats/message
 app.use('/api/chats', chatRoutes);    // Mount chat routes SECOND to match /api/chats and /api/chats/:chatId
+
+// Serve frontend static files in production
+if (ENV.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+  
+  // Catch-all route to serve the React index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../frontend/dist', 'index.html'));
+  });
+}
 
 // Centralized Error Handling Middleware (must be at the end)
 app.use(errorHandler);
