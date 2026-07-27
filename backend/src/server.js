@@ -15,6 +15,7 @@ import { errorHandler } from './middleware/error.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import chatRoutes from './routes/chat.routes.js';
 import messageRoutes from './routes/message.routes.js';
+import pineconeService from './services/pinecone.service.js';
 
 // Connect to Database
 connectDB();
@@ -70,6 +71,10 @@ app.get(/(.*)/, (req, res) => {
 app.use(errorHandler);
 
 const PORT = ENV.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running in ${ENV.NODE_ENV} mode on port ${PORT}`);
+
+// Initialize Pinecone then start server
+pineconeService.init().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running in ${ENV.NODE_ENV} mode on port ${PORT}`);
+  });
 });

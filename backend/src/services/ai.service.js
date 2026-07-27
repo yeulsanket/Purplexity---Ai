@@ -2,6 +2,7 @@ import { ChatGroq } from '@langchain/groq';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatMistralAI } from '@langchain/mistralai';
 import { ENV } from '../config/env.js';
+import pineconeService from './pinecone.service.js';
 
 class AIService {
   getModel(modelName) {
@@ -31,9 +32,20 @@ class AIService {
       };
     }
 
-    // 3. Prepare System Prompt
-    const formattedSystemPrompt = context
-      ? `${systemPrompt}\n\nWeb Search Context (Use this to answer the user's question, provide citations if applicable):\n${context}`
+    // 3. Prepare System Prompt with optional Web and RAG Context
+    let combinedContext = context || '';
+    
+    // Retrieve RAG Context from Pinecone based on the latest message (if available)
+    const latestUserMessage = messages.slice().reverse().find(m => m[0] === 'user');
+    if (latestUserMessage) {
+      const ragContext = await pineconeService.getContext(latestUserMessage[1]);
+      if (ragContext) {
+        combinedContext += `\n\nDatabase Context (Use this to answer the user's question, provide citations if applicable):\n${ragContext}`;
+      }
+    }
+
+    const formattedSystemPrompt = combinedContext
+      ? `${systemPrompt}\n\n${combinedContext}`
       : systemPrompt;
 
     // 4. Construct message chain

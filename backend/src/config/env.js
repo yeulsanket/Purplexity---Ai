@@ -12,6 +12,8 @@ export const ENV = {
   MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
   TAVILY_API_KEY: process.env.TAVILY_API_KEY,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  PINECONE_API_KEY: process.env.PINECONE_API_KEY,
+  PINECONE_INDEX: process.env.PINECONE_INDEX,
 };
 
 // Validate Critical Environment Variables for Production Hardening
