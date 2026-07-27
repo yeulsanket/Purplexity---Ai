@@ -15,6 +15,7 @@ import { errorHandler } from './middleware/error.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import chatRoutes from './routes/chat.routes.js';
 import messageRoutes from './routes/message.routes.js';
+import documentRoutes from './routes/document.routes.js';
 import pineconeService from './services/pinecone.service.js';
 
 // Connect to Database
@@ -56,8 +57,9 @@ app.get('/health', (req, res) => {
 
 // Setup Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/chats', messageRoutes); // Mount message routes FIRST to match /api/chats/message
-app.use('/api/chats', chatRoutes);    // Mount chat routes SECOND to match /api/chats and /api/chats/:chatId
+app.use('/api/chats', messageRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api/documents', documentRoutes);
 
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));

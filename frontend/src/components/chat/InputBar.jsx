@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Send, Loader2, Search, Globe, Square } from 'lucide-react';
+import { Send, Loader2, Search, Globe, Square, Paperclip, Check } from 'lucide-react';
 import { stopGeneration } from '../../store/slices/chatSlice';
 
 const InputBar = ({ onSendMessage, loading }) => {
@@ -8,6 +8,41 @@ const InputBar = ({ onSendMessage, loading }) => {
   const [message, setMessage] = useState('');
   const [modelChoice, setModelChoice] = useState('groq');
   const [webSearch, setWebSearch] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const fileInputRef = React.useRef(null);
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    setUploading(true);
+    setUploadSuccess(false);
+
+    try {
+      const response = await fetch('/api/documents/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        setUploadSuccess(true);
+        setTimeout(() => setUploadSuccess(false), 3000);
+      } else {
+        alert('Failed to upload document');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Error uploading file');
+    } finally {
+      setUploading(false);
+      // Reset input
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,6 +95,31 @@ const InputBar = ({ onSendMessage, loading }) => {
             >
               <Globe className="w-3.5 h-3.5" />
               <span>Web Search</span>
+            </button>
+
+            {/* Document Upload */}
+            <input 
+              type="file" 
+              accept=".pdf,.txt" 
+              className="hidden" 
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="flex items-center space-x-1.5 text-xs px-3 py-1.5 rounded-full border border-border bg-transparent text-gray-400 hover:bg-surfaceHover transition-colors disabled:opacity-50"
+              title="Upload PDF or Text file to Knowledge Base"
+            >
+              {uploading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : uploadSuccess ? (
+                <Check className="w-3.5 h-3.5 text-green-500" />
+              ) : (
+                <Paperclip className="w-3.5 h-3.5" />
+              )}
+              <span>{uploading ? 'Uploading...' : uploadSuccess ? 'Added!' : 'Attach PDF'}</span>
             </button>
           </div>
 
