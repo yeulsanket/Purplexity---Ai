@@ -8,7 +8,7 @@ class AIService {
     switch (modelName) {
       case 'gemini':
         if (!ENV.GOOGLE_API_KEY) return null;
-        return new ChatGoogleGenerativeAI({ apiKey: ENV.GOOGLE_API_KEY, model: 'gemini-1.5-pro-latest' });
+        return new ChatGoogleGenerativeAI({ apiKey: ENV.GOOGLE_API_KEY, model: 'gemini-2.5-pro' });
       case 'mistral':
         if (!ENV.MISTRAL_API_KEY) return null;
         return new ChatMistralAI({ apiKey: ENV.MISTRAL_API_KEY, model: 'mistral-large-latest' });
